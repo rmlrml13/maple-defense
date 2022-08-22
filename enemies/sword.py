@@ -3,12 +3,12 @@ import os
 from .enemy import Enemy
 
 imgs = []
-for x in range(20):
+for x in range(5):
     add_str = str(x)
     if x < 10:
-        add_str = "0" + add_str
+        add_str = add_str
     imgs.append(pygame.transform.scale(
-        pygame.image.load(os.path.join("game_assets/enemies/8", "8_enemies_1_run_0" + add_str + ".png")).convert_alpha(),
+        pygame.image.load(os.path.join("game_assets/Snail/", "Snail_" + add_str + "_0.png")),
         (100, 100)))
 
 

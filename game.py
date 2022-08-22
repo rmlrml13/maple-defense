@@ -1,50 +1,64 @@
 import pygame
 import os
-from enemies.scorpion import Scorpion
-from enemies.club import Club
-from enemies.wizard import Wizard
+from enemies.snail import Snail
+from enemies.blue_snail import Blue_Snail
+from enemies.orange_mushroom import Orange_Mushroom
 from enemies.sword import Sword
-from towers.archerTower import ArcherTowerLong, ArcherTowerShort
+from enemies.gold import Meso
+from enemies.red_snail import Red_Snail
+from towers.archerTower import Warrior, ArcherTowerShort
 from towers.supportTower import DamageTower, RangeTower
 from menu.menu import VerticalMenu, PlayPauseButton
 import time
 import random
+
 pygame.font.init()
 pygame.init()
 
-path = [(-10, 224),(19, 224), (177, 235), (282, 283), (526, 277), (607, 217), (641, 105), (717, 57), (796, 83), (855, 222), (973, 284), (1046, 366), (1022, 458), (894, 492), (740, 504), (580, 542), (148, 541), (10, 442), (-20, 335), (-75, 305), (-100, 345)]
+path = [(-10, 224), (19, 224), (177, 235), (282, 283), (526, 277), (607, 217), (641, 105), (717, 57), (796, 83),
+        (855, 222), (973, 284), (1046, 366), (1022, 458), (894, 492), (740, 504), (580, 542), (148, 541), (10, 442),
+        (-20, 335), (-75, 305), (-100, 345)]
 
-lives_img = pygame.image.load(os.path.join("game_assets","heart.png")).convert_alpha()
-star_img = pygame.image.load(os.path.join("game_assets","star.png")).convert_alpha()
-side_img = pygame.transform.scale(pygame.image.load(os.path.join("game_assets","side.png")).convert_alpha(), (120, 500))
+lives_img = pygame.image.load(os.path.join("game_assets", "heart.png")).convert_alpha()
+star_img = pygame.image.load(os.path.join("game_assets", "star.png")).convert_alpha()
+side_img = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "side.jpg")).convert_alpha(),
+                                  (120, 500))
 
-buy_archer = pygame.transform.scale(pygame.image.load(os.path.join("game_assets","buy_archer.png")).convert_alpha(), (75, 75))
-buy_archer_2 = pygame.transform.scale(pygame.image.load(os.path.join("game_assets","buy_archer_2.png")).convert_alpha(), (75, 75))
-buy_damage = pygame.transform.scale(pygame.image.load(os.path.join("game_assets","buy_damage.png")).convert_alpha(), (75, 75))
-buy_range = pygame.transform.scale(pygame.image.load(os.path.join("game_assets","buy_range.png")).convert_alpha(), (75, 75))
+buy_archer = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "buy_archer.png")).convert_alpha(),
+                                    (75, 75))
+buy_archer_2 = pygame.transform.scale(
+    pygame.image.load(os.path.join("game_assets", "buy_archer_2.png")).convert_alpha(), (75, 75))
+buy_damage = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "buy_damage.png")).convert_alpha(),
+                                    (75, 75))
+buy_range = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "buy_range.png")).convert_alpha(),
+                                   (75, 75))
 
-play_btn = pygame.transform.scale(pygame.image.load(os.path.join("game_assets","button_start.png")).convert_alpha(), (75, 75))
-pause_btn = pygame.transform.scale(pygame.image.load(os.path.join("game_assets","button_pause.png")).convert_alpha(), (75, 75))
+play_btn = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "button_start.png")).convert_alpha(),
+                                  (75, 75))
+pause_btn = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "button_pause.png")).convert_alpha(),
+                                   (75, 75))
 
-sound_btn = pygame.transform.scale(pygame.image.load(os.path.join("game_assets","button_sound.png")).convert_alpha(), (75, 75))
-sound_btn_off = pygame.transform.scale(pygame.image.load(os.path.join("game_assets","button_sound_off.png")).convert_alpha(), (75, 75))
+sound_btn = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "button_sound.png")).convert_alpha(),
+                                   (75, 75))
+sound_btn_off = pygame.transform.scale(
+    pygame.image.load(os.path.join("game_assets", "button_sound_off.png")).convert_alpha(), (75, 75))
 
-wave_bg = pygame.transform.scale(pygame.image.load(os.path.join("game_assets","wave.png")).convert_alpha(), (225, 75))
+wave_bg = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "side.jpg")).convert_alpha(), (225, 75))
 
 attack_tower_names = ["archer", "archer2"]
 support_tower_names = ["range", "damage"]
 
-# load music
+# 음악
 pygame.mixer.music.load(os.path.join("game_assets", "music.mp3"))
 
-# waves are in form
-# frequency of enemies
-# (# scorpions, # wizards, # clubs, # swords)
+# 웨이브 몬스터
+# 몬스터 규모 설정
+# (# Snail, # Blue_Snail, # Red_Snail, # Orange_Mushrum, # Bonus)
 waves = [
-    [20, 0, 0],
-    [50, 0, 0],
-    [100, 0, 0],
-    [0, 20, 0],
+    [10, 0, 0, 0, 0],
+    [0, 10, 0],
+    [0, 0, 10],
+    [0, 0, 0],
     [0, 50, 0, 1],
     [0, 100, 0],
     [20, 100, 0],
@@ -56,6 +70,7 @@ waves = [
     [200, 100, 200],
 ]
 
+
 class Game:
     def __init__(self, win):
         self.width = 1350
@@ -66,8 +81,8 @@ class Game:
         self.support_towers = []
         self.lives = 10
         self.money = 2000
-        self.bg = pygame.image.load(os.path.join("game_assets", "bg.png"))
-        self.bg = pygame.transform.scale(self.bg, (self.width, self.height))
+        self.bg = pygame.image.load(os.path.join("game_assets", "map/map_0.png"))
+        self.bg = pygame.transform.scale(self.bg, (1350, 700))
         self.timer = time.time()
         self.life_font = pygame.font.SysFont("comicsans", 65)
         self.selected_tower = None
@@ -96,7 +111,7 @@ class Game:
                 self.pause = True
                 self.playPauseButton.paused = self.pause
         else:
-            wave_enemies = [Scorpion(), Wizard(), Club(), Sword()]
+            wave_enemies = [Snail(), Blue_Snail(), Red_Snail(), Orange_Mushroom(), Meso()]
             for x in range(len(self.current_wave)):
                 if self.current_wave[x] != 0:
                     self.enemys.append(wave_enemies[x])
@@ -110,15 +125,15 @@ class Game:
         while run:
             clock.tick(500)
 
-            if self.pause == False:
-                # gen monsters
-                if time.time() - self.timer >= random.randrange(1,6)/3:
+            if not self.pause:
+                # 몬스터 생성
+                if time.time() - self.timer >= random.randrange(1, 6) / 3:
                     self.timer = time.time()
                     self.gen_enemies()
 
             pos = pygame.mouse.get_pos()
 
-            # check for moving object
+            # 타워 설치 범위
             if self.moving_object:
                 self.moving_object.move(pos[0], pos[1])
                 tower_list = self.attack_towers[:] + self.support_towers[:]
@@ -133,13 +148,13 @@ class Game:
                         if not collide:
                             self.moving_object.place_color = (0, 0, 255, 100)
 
-            # main event loop
+            # 메인 루프
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
 
                 if event.type == pygame.MOUSEBUTTONUP:
-                    # if you're moving an object and click
+                    #
                     if self.moving_object:
                         not_allowed = False
                         tower_list = self.attack_towers[:] + self.support_towers[:]
@@ -157,13 +172,13 @@ class Game:
                             self.moving_object = None
 
                     else:
-                        # check for play or pause
+                        # 플레이 or 중단 버튼
                         if self.playPauseButton.click(pos[0], pos[1]):
-                            self.pause = not(self.pause)
+                            self.pause = not (self.pause)
                             self.playPauseButton.paused = self.pause
 
                         if self.soundButton.click(pos[0], pos[1]):
-                            self.music_on = not(self.music_on)
+                            self.music_on = not (self.music_on)
                             self.soundButton.paused = self.music_on
                             if self.music_on:
                                 pygame.mixer.music.unpause()
@@ -189,7 +204,7 @@ class Game:
                                         self.money -= cost
                                         self.selected_tower.upgrade()
 
-                        if not(btn_clicked):
+                        if not (btn_clicked):
                             for tw in self.attack_towers:
                                 if tw.click(pos[0], pos[1]):
                                     tw.selected = True
@@ -232,7 +247,7 @@ class Game:
                     run = False
 
             self.draw()
-
+            time.sleep(0.01)
 
     def point_to_line(self, tower):
         """
@@ -245,7 +260,7 @@ class Game:
         return True
 
     def draw(self):
-        self.win.blit(self.bg, (0,0))
+        self.win.blit(self.bg, (0, 0))
 
         # draw placement rings
         if self.moving_object:
@@ -287,8 +302,8 @@ class Game:
         self.soundButton.draw(self.win)
 
         # draw lives
-        text = self.life_font.render(str(self.lives), 1, (255,255,255))
-        life = pygame.transform.scale(lives_img,(50,50))
+        text = self.life_font.render(str(self.lives), 1, (255, 255, 255))
+        life = pygame.transform.scale(lives_img, (50, 50))
         start_x = self.width - life.get_width() - 10
 
         self.win.blit(text, (start_x - text.get_width() - 10, 13))
@@ -303,16 +318,16 @@ class Game:
         self.win.blit(money, (start_x, 65))
 
         # draw wave
-        self.win.blit(wave_bg, (10,10))
-        text = self.life_font.render("Wave #" + str(self.wave), 1, (255,255,255))
-        self.win.blit(text, (10 + wave_bg.get_width()/2 - text.get_width()/2, 25))
+        self.win.blit(wave_bg, (10, 10))
+        text = self.life_font.render("Wave #" + str(self.wave), 1, (255, 255, 255))
+        self.win.blit(text, (10 + wave_bg.get_width() / 2 - text.get_width() / 2, 25))
 
         pygame.display.update()
 
     def add_tower(self, name):
         x, y = pygame.mouse.get_pos()
         name_list = ["buy_archer", "buy_archer_2", "buy_damage", "buy_range"]
-        object_list = [ArcherTowerLong(x,y), ArcherTowerShort(x,y), DamageTower(x,y), RangeTower(x,y)]
+        object_list = [Warrior(x, y), ArcherTowerShort(x, y), DamageTower(x, y), RangeTower(x, y)]
 
         try:
             obj = object_list[name_list.index(name)]
@@ -320,4 +335,3 @@ class Game:
             obj.moving = True
         except Exception as e:
             print(str(e) + "NOT VALID NAME")
-
