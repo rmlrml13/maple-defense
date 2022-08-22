@@ -14,6 +14,7 @@ for x in range(6):
         pygame.image.load(os.path.join("game_assets/Character/Character_" + str(x) + "_0.png")),
         (68, 90)))
 
+
 class Warrior(Tower):
     def __init__(self, x, y):
         super().__init__(x, y)
@@ -28,7 +29,7 @@ class Warrior(Tower):
         self.original_damage = self.damage
         self.width = self.height = 90
         self.moving = False
-        self.name = "Warrior"
+        self.name = "archer"
 
         self.menu = Menu(self, self.x, self.y, menu_bg, [1000, 2000, "MAX"])
         self.menu.add_btn(upgrade_btn, "Upgrade")
@@ -58,7 +59,6 @@ class Warrior(Tower):
         self.range = r
 
     def attack(self, enemies):
-
         money = 0
         self.inRange = False
         enemy_closest = []
@@ -103,7 +103,6 @@ class ArcherTowerShort(Warrior):
     def __init__(self, x, y):
         super().__init__(x, y)
         self.tower_imgs = tower_imgs[:]
-        # self.archer_imgs = archer_imgs[:]
         self.archer_count = 0
         self.range = 120
         self.original_range = self.range
