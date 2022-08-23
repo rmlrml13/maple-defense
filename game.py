@@ -3,11 +3,14 @@ import os
 from enemies.snail import Snail
 from enemies.blue_snail import Blue_Snail
 from enemies.orange_mushroom import Orange_Mushroom
-from enemies.sword import Sword
+from enemies.balrog import Balrog
+from enemies.horny_mushroom import Horny_Mushroom
 from enemies.gold import Meso
 from enemies.red_snail import Red_Snail
-from towers.archerTower import Warrior, ArcherTowerShort
-from towers.supportTower import DamageTower, RangeTower
+from enemies.pig import Pig
+from enemies.wraith import Wraith
+from enemies.stump import Stump
+from towers.attackTower import Warrior, Archer, Bandit, Wizard
 from menu.menu import VerticalMenu, PlayPauseButton
 import time
 import random
@@ -24,13 +27,13 @@ star_img = pygame.image.load(os.path.join("game_assets", "star.png")).convert_al
 side_img = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "side.jpg")).convert_alpha(),
                                   (120, 500))
 
-buy_archer = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "buy_archer.png")).convert_alpha(),
+buy_archer = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "buy_warrior.png")).convert_alpha(),
                                     (75, 75))
 buy_archer_2 = pygame.transform.scale(
-    pygame.image.load(os.path.join("game_assets", "buy_archer_2.png")).convert_alpha(), (75, 75))
-buy_damage = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "buy_damage.png")).convert_alpha(),
+    pygame.image.load(os.path.join("game_assets", "buy_archer.png")).convert_alpha(), (75, 75))
+buy_damage = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "buy_bandit.png")).convert_alpha(),
                                     (75, 75))
-buy_range = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "buy_range.png")).convert_alpha(),
+buy_range = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "buy_wizard.png")).convert_alpha(),
                                    (75, 75))
 
 play_btn = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "button_start.png")).convert_alpha(),
@@ -45,29 +48,26 @@ sound_btn_off = pygame.transform.scale(
 
 wave_bg = pygame.transform.scale(pygame.image.load(os.path.join("game_assets", "side.jpg")).convert_alpha(), (225, 75))
 
-attack_tower_names = ["archer", "archer2"]
-support_tower_names = ["range", "damage"]
+attack_tower_names = ["warrior", "archer", "bandit", "wizard"]
 
 # 음악
 pygame.mixer.music.load(os.path.join("game_assets", "music.mp3"))
 
 # 웨이브 몬스터
 # 몬스터 규모 설정
-# (# Snail, # Blue_Snail, # Red_Snail, # Orange_Mushrum, # Bonus)
+# (#Snail, #Blue_Snail, #Red_Snail, #Orange_Mushrum, #Horny_Mushroom, #Stump, #Pig, #Wraith, #Balrog, #Bonus)
 waves = [
-    [10, 0, 0, 0, 0],
-    [0, 10, 0],
-    [0, 0, 10],
-    [0, 0, 0],
-    [0, 50, 0, 1],
-    [0, 100, 0],
-    [20, 100, 0],
-    [50, 100, 0],
-    [100, 100, 0],
-    [0, 0, 50, 3],
-    [20, 0, 100],
-    [20, 0, 150],
-    [200, 100, 200],
+    [20, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 20, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 20, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 20, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 20],
+    [0, 0, 0, 0, 20, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 20, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 20, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 20, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 20],
+    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
 ]
 
 
@@ -111,7 +111,8 @@ class Game:
                 self.pause = True
                 self.playPauseButton.paused = self.pause
         else:
-            wave_enemies = [Snail(), Blue_Snail(), Red_Snail(), Orange_Mushroom(), Meso()]
+            wave_enemies = [Snail(), Blue_Snail(), Red_Snail(), Orange_Mushroom(), Horny_Mushroom(), Stump(), Pig(),
+                            Wraith(), Balrog(), Meso()]
             for x in range(len(self.current_wave)):
                 if self.current_wave[x] != 0:
                     self.enemys.append(wave_enemies[x])
@@ -123,11 +124,11 @@ class Game:
         run = True
         clock = pygame.time.Clock()
         while run:
-            clock.tick(500)
+            clock.tick(50)
 
             if not self.pause:
                 # 몬스터 생성
-                if time.time() - self.timer >= random.randrange(1, 6) / 3:
+                if time.time() - self.timer >= random.randrange(1, 6) / 1:
                     self.timer = time.time()
                     self.gen_enemies()
 
@@ -165,8 +166,6 @@ class Game:
                         if not not_allowed and self.point_to_line(self.moving_object):
                             if self.moving_object.name in attack_tower_names:
                                 self.attack_towers.append(self.moving_object)
-                            elif self.moving_object.name in support_tower_names:
-                                self.support_towers.append(self.moving_object)
 
                             self.moving_object.moving = False
                             self.moving_object = None
@@ -198,11 +197,29 @@ class Game:
                         if self.selected_tower:
                             btn_clicked = self.selected_tower.menu.get_clicked(pos[0], pos[1])
                             if btn_clicked:
-                                if btn_clicked == "Upgrade":
+                                if btn_clicked == "Upgrade1":
                                     cost = self.selected_tower.get_upgrade_cost()
                                     if self.money >= cost:
                                         self.money -= cost
-                                        self.selected_tower.upgrade()
+                                        self.selected_tower.upgrade1()
+
+                                if btn_clicked == "Upgrade2":
+                                    cost = self.selected_tower.get_upgrade_cost()
+                                    if self.money >= cost:
+                                        self.money -= cost
+                                        self.selected_tower.upgrade2()
+
+                                if btn_clicked == "Upgrade3":
+                                    cost = self.selected_tower.get_upgrade_cost()
+                                    if self.money >= cost:
+                                        self.money -= cost
+                                        self.selected_tower.upgrade3()
+
+                                if btn_clicked == "Upgrade4":
+                                    cost = self.selected_tower.get_upgrade_cost()
+                                    if self.money >= cost:
+                                        self.money -= cost
+                                        self.selected_tower.upgrade4()
 
                         if not (btn_clicked):
                             for tw in self.attack_towers:
@@ -250,13 +267,6 @@ class Game:
             time.sleep(0.01)
 
     def point_to_line(self, tower):
-        """
-        returns if you can place tower based on distance from
-        path
-        :param tower: Tower
-        :return: Bool
-        """
-        # find two closest points
         return True
 
     def draw(self):
@@ -327,7 +337,7 @@ class Game:
     def add_tower(self, name):
         x, y = pygame.mouse.get_pos()
         name_list = ["buy_archer", "buy_archer_2", "buy_damage", "buy_range"]
-        object_list = [Warrior(x, y), ArcherTowerShort(x, y), DamageTower(x, y), RangeTower(x, y)]
+        object_list = [Warrior(x, y), Archer(x, y), Bandit(x, y), Wizard(x, y)]
 
         try:
             obj = object_list[name_list.index(name)]

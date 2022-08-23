@@ -31,14 +31,6 @@ class Tower:
         self.place_color = (0, 0, 255, 100)
 
     def draw(self, win):
-        """
-        draws the tower
-        :param win: surface
-        :return: None
-        """
-        # img = self.tower_imgs[self.level]
-        # win.blit(img, (self.x - img.get_width() // 2, self.y - img.get_height() // 2))
-
         # draw menu
         if self.selected:
             self.menu.draw(win)
@@ -59,13 +51,6 @@ class Tower:
         win.blit(surface, (self.x - 50, self.y - 50))
 
     def click(self, X, Y):
-        """
-        returns if tower has been clicked on
-        and selects tower if it was clicked
-        :param X: int
-        :param Y: int
-        :return: bool
-        """
         img = self.tower_imgs[self.level - 1]
         if X <= self.x - img.get_width() // 2 + self.width and X >= self.x - img.get_width() // 2:
             if Y <= self.y + self.height - img.get_height() // 2 and Y >= self.y - img.get_height() // 2:
@@ -73,42 +58,60 @@ class Tower:
         return False
 
     def sell(self):
-        """
-        call to sell the tower, returns sell price
-        :return: int
-        """
         return self.sell_price[self.level - 1]
 
-    def upgrade(self):
+    def upgrade1(self):
         if self.level < len(self.tower_imgs):
             self.tower_imgs.clear()
             for x in range(6):
                 self.tower_imgs.append(pygame.transform.scale(
-                    pygame.image.load(os.path.join("game_assets/Orange_Mushroom/Orange_Mushroom_" + str(x) + "_0.png")),
-                    (60, 90)))
+                    pygame.image.load(os.path.join("game_assets/Character/Warrior2_" + str(x) + ".png")),
+                    (110, 120)))
             self.level += 1
-            self.damage += 1
+            self.damage += 3
+
+    def upgrade2(self):
+        if self.level < len(self.tower_imgs):
+            self.tower_imgs.clear()
+            for x in range(6):
+                self.tower_imgs.append(pygame.transform.scale(
+                    pygame.image.load(os.path.join("game_assets/Character/Warrior2_" + str(x) + ".png")),
+                    (110, 120)))
+            self.level += 1
+            self.damage += 3
+
+    def upgrade3(self):
+        if self.level < len(self.tower_imgs):
+            self.tower_imgs.clear()
+            for x in range(6):
+                self.tower_imgs.append(pygame.transform.scale(
+                    pygame.image.load(os.path.join("game_assets/Character/Warrior2_" + str(x) + ".png")),
+                    (110, 120)))
+            self.level += 1
+            self.damage += 3
+
+    def upgrade4(self):
+        if self.level < len(self.tower_imgs):
+            self.tower_imgs.clear()
+            for x in range(6):
+                self.tower_imgs.append(pygame.transform.scale(
+                    pygame.image.load(os.path.join("game_assets/Character/Wizard2_" + str(x) + ".png")),
+                    (100, 85)))
+            self.level += 1
+            self.damage += 2
 
     def get_upgrade_cost(self):
-        """
-        returns the upgrade cost, if 0 then can't upgrade anymore
-        :return: int
-        """
         return self.price[self.level - 1]
 
     def move(self, x, y):
-        """
-        moves tower to given x and y
-        :param x: int
-        :param y: int
-        :return: None
-        """
+
         self.x = x
         self.y = y
         self.menu.x = x
         self.menu.y = y
         self.menu.update()
 
+    # 타워 충돌 방지
     def collide(self, otherTower):
         x2 = otherTower.x
         y2 = otherTower.y
