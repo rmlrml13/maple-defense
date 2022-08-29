@@ -9,7 +9,7 @@ for x in range(5):
         add_str = add_str
     imgs.append(pygame.transform.scale(
         pygame.image.load(os.path.join("game_assets/Balrog/", "Balrog_" + add_str + ".png")),
-        (100, 90)))
+        (120, 110)))
 
 
 class Balrog(Enemy):
@@ -19,7 +19,7 @@ class Balrog(Enemy):
         self.name = "Balrog"
         self.money = 1000
         self.imgs = imgs[:]
-        self.max_health = 100
+        self.max_health = 200
         self.health = self.max_health
 
 

@@ -19,7 +19,7 @@ class Blue_Snail(Enemy):
         self.name = "blue_snail"
         self.money = 5
         self.imgs = imgs[:]
-        self.max_health = 2
+        self.max_health = 4
         self.health = self.max_health
 
 

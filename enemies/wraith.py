@@ -19,7 +19,7 @@ class Wraith(Enemy):
         super().__init__()
         self.name = "Wraith"
         self.money = 20
-        self.max_health = 5
+        self.max_health = 16
         self.health = self.max_health
         self.imgs = imgs[:]
 

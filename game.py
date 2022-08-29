@@ -80,7 +80,7 @@ class Game:
         self.attack_towers = []
         self.support_towers = []
         self.lives = 10
-        self.money = 2000
+        self.money = 10000
         self.bg = pygame.image.load(os.path.join("game_assets", "map/map_0.png"))
         self.bg = pygame.transform.scale(self.bg, (1350, 700))
         self.timer = time.time()
@@ -89,7 +89,7 @@ class Game:
         self.menu = VerticalMenu(self.width - side_img.get_width() + 70, 250, side_img)
         self.menu.add_btn(buy_archer, "buy_archer", 500)
         self.menu.add_btn(buy_archer_2, "buy_archer_2", 750)
-        self.menu.add_btn(buy_damage, "buy_damage", 1000)
+        self.menu.add_btn(buy_damage, "buy_damage", 500)
         self.menu.add_btn(buy_range, "buy_range", 1000)
         self.moving_object = None
         self.wave = 0
@@ -264,7 +264,7 @@ class Game:
                     run = False
 
             self.draw()
-            time.sleep(0.01)
+
 
     def point_to_line(self, tower):
         return True
@@ -329,7 +329,7 @@ class Game:
 
         # draw wave
         self.win.blit(wave_bg, (10, 10))
-        text = self.life_font.render("Wave #" + str(self.wave), 1, (255, 255, 255))
+        text = self.life_font.render("Wave #" + str(self.wave+1), 1, (255, 255, 255))
         self.win.blit(text, (10 + wave_bg.get_width() / 2 - text.get_width() / 2, 25))
 
         pygame.display.update()

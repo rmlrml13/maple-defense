@@ -18,8 +18,8 @@ class Stump(Enemy):
     def __init__(self):
         super().__init__()
         self.name = "Stump"
-        self.money = 20
-        self.max_health = 5
+        self.money = 15
+        self.max_health = 12
         self.health = self.max_health
         self.imgs = imgs[:]
 

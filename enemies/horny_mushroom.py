@@ -18,8 +18,8 @@ class Horny_Mushroom(Enemy):
     def __init__(self):
         super().__init__()
         self.name = "Horny_Mushroom"
-        self.money = 20
-        self.max_health = 5
+        self.money = 15
+        self.max_health = 10
         self.health = self.max_health
         self.imgs = imgs[:]
 

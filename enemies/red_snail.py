@@ -17,9 +17,9 @@ class Red_Snail(Enemy):
     def __init__(self):
         super().__init__()
         self.name = "red_snail"
-        self.money = 5
+        self.money = 10
         self.imgs = imgs[:]
-        self.max_health = 2
+        self.max_health = 6
         self.health = self.max_health
 
 

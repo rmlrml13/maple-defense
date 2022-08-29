@@ -61,12 +61,20 @@ class Tower:
         return self.sell_price[self.level - 1]
 
     def upgrade1(self):
-        if self.level < len(self.tower_imgs):
+        if self.level == 1:
             self.tower_imgs.clear()
             for x in range(6):
                 self.tower_imgs.append(pygame.transform.scale(
                     pygame.image.load(os.path.join("game_assets/Character/Warrior2_" + str(x) + ".png")),
                     (110, 120)))
+            self.level += 1
+            self.damage += 3
+        elif self.level == 2:
+            self.tower_imgs.clear()
+            for x in range(6):
+                self.tower_imgs.append(pygame.transform.scale(
+                    pygame.image.load(os.path.join("game_assets/Character/Warrior3_" + str(x) + ".png")),
+                    (150, 120)))
             self.level += 1
             self.damage += 3
 

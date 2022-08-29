@@ -14,13 +14,19 @@ for x in range(7):
         pygame.image.load(os.path.join("game_assets/Character/Warrior_" + str(x) + ".png")),
         (88, 90)))
 
+effect_imgs = []
+for x in range(5):
+    effect_imgs.append(pygame.transform.scale(
+        pygame.image.load((os.path.join("game_assets/Effect/magic_effect_" + str(x) + ".png"))),
+        (50, 50)))
+
 
 class Warrior(Tower):
     def __init__(self, x, y):
         super().__init__(x, y)
         self.tower_imgs = tower_imgs1[:]
         self.archer_count = 0
-        self.range = 250
+        self.range = 220
         self.original_range = self.range
         self.inRange = False
         self.left = True
@@ -92,18 +98,19 @@ class Warrior(Tower):
         return money
 
 
-tower_imgs = []
-for x in range(6):
-    tower_imgs.append(pygame.transform.scale(
-        pygame.image.load(os.path.join("game_assets/Orange_Mushroom/Orange_Mushroom_" + str(x) + "_0.png")),
+tower_imgs2 = []
+for x in range(5):
+    tower_imgs2.append(pygame.transform.scale(
+        pygame.image.load(os.path.join("game_assets/Effect/magic_effect_" + str(x) + ".png")),
         (60, 90)))
+
 
 class Archer(Warrior):
     def __init__(self, x, y):
         super().__init__(x, y)
-        self.tower_imgs = tower_imgs[:]
+        self.tower_imgs = tower_imgs2[:]
         self.archer_count = 0
-        self.range = 500
+        self.range = 400
         self.original_range = self.range
         self.inRange = False
         self.left = True
@@ -115,38 +122,41 @@ class Archer(Warrior):
         self.name = "archer"
 
 
-tower_imgs = []
+tower_imgs3 = []
 for x in range(6):
-    tower_imgs.append(pygame.transform.scale(
+    tower_imgs3.append(pygame.transform.scale(
         pygame.image.load(os.path.join("game_assets/Orange_Mushroom/Orange_Mushroom_" + str(x) + "_0.png")),
         (60, 90)))
+
 
 class Bandit(Warrior):
     def __init__(self, x, y):
         super().__init__(x, y)
-        self.tower_imgs = tower_imgs[:]
+        self.tower_imgs = tower_imgs3[:]
         self.archer_count = 0
-        self.range = 200
+        self.range = 300
         self.original_range = self.range
         self.inRange = False
         self.left = True
-        self.damage = 1
+        self.damage = 2
         self.original_damage = self.damage
 
         self.menu = Menu(self, self.x, self.y, menu_bg, [1000, 2000, "MAX"])
         self.menu.add_btn(upgrade_btn, "Upgrade3")
         self.name = "bandit"
 
-tower_imgs = []
+
+tower_imgs4 = []
 for x in range(6):
-    tower_imgs.append(pygame.transform.scale(
+    tower_imgs4.append(pygame.transform.scale(
         pygame.image.load(os.path.join("game_assets/Character/Wizard_" + str(x) + ".png")),
         (80, 90)))
+
 
 class Wizard(Warrior):
     def __init__(self, x, y):
         super().__init__(x, y)
-        self.tower_imgs = tower_imgs[:]
+        self.tower_imgs = tower_imgs4[:]
         self.archer_count = 0
         self.range = 350
         self.original_range = self.range

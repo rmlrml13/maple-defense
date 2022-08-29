@@ -19,7 +19,7 @@ class Pig(Enemy):
         super().__init__()
         self.name = "Pig"
         self.money = 20
-        self.max_health = 5
+        self.max_health = 14
         self.health = self.max_health
         self.imgs = imgs[:]
 

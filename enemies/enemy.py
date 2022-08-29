@@ -138,22 +138,12 @@ class Enemy:
     #     self.max_health = 0
 
     def draw(self, win):
-        """
-        Draws the enemy with the given images
-        :param win: surface
-        :return: None
-        """
         self.img = self.imgs[self.animation_count]
 
         win.blit(self.img, (self.x - self.img.get_width() / 2, self.y - self.img.get_height() / 2 - 35))
         self.draw_health_bar(win)
 
     def draw_health_bar(self, win):
-        """
-        draw health bar above enemy
-        :param win: surface
-        :return: None
-        """
         length = 50
         move_by = length / self.max_health
         health_bar = round(move_by * self.health)
@@ -223,13 +213,8 @@ class Enemy:
                     self.path_pos += 1
 
     def hit(self, damage):
-        """
-        Returns if an enemy has died and removes one health
-        each call
-        :return: Bool
-        """
+
         self.health -= damage
         if self.health <= 0:
-
             return True
         return False
